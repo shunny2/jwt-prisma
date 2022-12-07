@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 
 import { validateSignIn } from '../helpers';
 import { verifyToken } from '../middlewares';
+import { BadRequestError, ForbiddenError, UnauthorizedError } from '../helpers/api-errors';
 
 dotenv.config();
 
@@ -26,55 +27,50 @@ authRoutes.post('/signIn', async (req: Request, res: Response) => {
     if (error)
         return res.status(400).json({ message: error?.message });
 
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-                email: value.email
-            }
-        });
+    const user = await prisma.user.findUnique({
+        where: {
+            email: value.email
+        }
+    });
 
-        if (!user)
-            return res.status(400).json({ message: 'Invalid email or password!' });
+    if (!user)
+        throw new BadRequestError('Invalid email or password!');
 
-        // Check the user password.
-        const verifyPassword = await bcrypt.compare(value.password, user.password);
+    // Check the user password.
+    const verifyPassword = await bcrypt.compare(value.password, user.password);
 
-        if (!verifyPassword)
-            return res.status(400).json({ message: 'Invalid email or password!' });
+    if (!verifyPassword)
+        throw new BadRequestError('Invalid email or password!');
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
 
-        const refreshToken = jwt.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
+    const refreshToken = jwt.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
 
-        // Set maxAge with 1 day.
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
+    // Set maxAge with 1 day.
+    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
 
-        return res.status(200).json({ token });
-    } catch (error) {
-        return res.status(500).json({ error: 'Unable to register. There was an internal server error.' });
-    }
+    return res.status(200).json({ token });
 });
 
 authRoutes.get('/refresh', async (req: Request, res: Response) => {
     const cookies = req.cookies;
-    
+
     if (!cookies?.jwt)
-        return res.sendStatus(401);
+        throw new UnauthorizedError();
 
     const refreshToken = cookies.jwt;
 
     try {
         jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err: any, decode: any) => {
-            console.log('Error:', err)
             if (err)
-                return res.sendStatus(401);
+                throw new UnauthorizedError();
 
             const token = jwt.sign({ id: decode.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
 
             return res.status(200).json({ token });
         });
-    } catch (error) {
-        return res.sendStatus(403);
+    } catch (error: any) {
+        throw new ForbiddenError();
     }
 });
 
@@ -83,9 +79,9 @@ authRoutes.get('/logout', async (req: Request, res: Response) => {
 
     if (!cookies?.jwt)
         return res.sendStatus(204);
-    
+
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', maxAge: 1, secure: true });
-    
+
     return res.sendStatus(204);
 });
 
