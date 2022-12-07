@@ -1,9 +1,13 @@
+import 'express-async-errors';
+
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import routes from './routes';
+
+import { errors } from './middlewares';
 
 dotenv.config();
 
@@ -24,6 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api/v1', routes);
+
+// Middleware for errors
+app.use(errors);
 
 app.listen(PORT, () => {
     console.log(`[server]: Server is running at https://localhost:${PORT}`);
