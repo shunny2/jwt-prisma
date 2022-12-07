@@ -4,7 +4,7 @@ import { prisma } from '../lib/prisma';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-import { validateRefreshToken } from '../helpers';
+import { ForbiddenError, UnauthorizedError } from '../helpers/api-errors';
 
 dotenv.config();
 
@@ -14,14 +14,14 @@ type JWTPayload = {
     exp: number;
 }
 
-export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = async (req: Request, _: Response, next: NextFunction) => {
     const { authorization } = req.headers;
 
     // Cut the received string and takes the token at position 1.
     const token = authorization && authorization.split(' ')[1];
 
     if (token == null)
-        return res.sendStatus(401);
+        throw new UnauthorizedError();
 
     try {
         const { id } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
@@ -31,13 +31,13 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         });
 
         if (!user)
-            return res.sendStatus(401);
+            throw new UnauthorizedError();
 
         const { password, ...loggedUser } = user;
         req.user = loggedUser;
 
         next();
-    } catch (error) {
-        return res.sendStatus(403);
+    } catch (error: any) {
+        throw new ForbiddenError();
     }
 };

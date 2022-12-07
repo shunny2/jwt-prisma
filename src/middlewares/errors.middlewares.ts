@@ -1,11 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
-interface Errors extends Error {
-    statusCode: number;
-}
+import { ApiError } from '../helpers/api-errors';
 
-export const errors = (error: Errors, _: Request, res: Response, next: NextFunction) => {
+export const errors = (error: Error & Partial<ApiError>, _: Request, res: Response, next: NextFunction) => {
     const statusCode = error.statusCode ?? 500;
-    const message = error.statusCode ? error.message : 'Internal Server Error';
+    const message = error.statusCode ? error.message : 'There was an internal server error.';
+    
     return res.status(statusCode).json({ message: message });
 };
