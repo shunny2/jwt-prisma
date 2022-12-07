@@ -1,15 +1,44 @@
-import joi from 'joi';
+import Joi from 'joi';
 
-export const validateUser = (data: object) => {
-    const schema = joi.object().keys({
-        name: joi.string()
+import { IUser } from '../utils/types';
+
+export const validateUser = (user: IUser) => {
+    const schema = Joi.object<IUser>({
+        name: Joi.string()
             .min(4)
             .max(30)
             .required(),
 
-        email: joi.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        email: Joi.string()
+            .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+
+        password: Joi.string()
+            .pattern(new RegExp('^[a-zA-Z0-9]{8,30}$')),
+
+        repeatPassword: Joi.ref('password')
+    }).with('password', 'repeatPassword');
+
+    return schema.validate(user, { presence: 'required' });
+};
+
+export const validateSignIn = (user: IUser) => {
+    const schema = Joi.object<IUser>({
+        email: Joi.string()
+            .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+
+        password: Joi.string()
+            .pattern(new RegExp('^[a-zA-Z0-9]{8,30}$'))
     });
-    
-    return schema.validate(data, { presence: 'required' });
+
+    return schema.validate(user, { presence: 'required' });
+};
+
+export const validateRefreshToken = (refreshToken: Object) => {
+    const schema = Joi.object().keys({
+        refreshToken: Joi.string()
+            // .pattern(new RegExp('/^(?:[\w-]*\.){2}[\w-]*$/'))
+            .required()
+    });
+
+    return schema.validate(refreshToken, { presence: 'required' });
 };
