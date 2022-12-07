@@ -21,16 +21,19 @@ An application made with Nodejs, Express, and Prisma to perform a JSON Web Token
   </thead>
   <tbody>
     <td>
-      <a href="https://nodejs.org/en/"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/nodejs-1.svg" alt="Node.js logo image." /></a>
+      <a href="https://nodejs.org/en/" title="NodeJS"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/nodejs-1.svg" alt="Node.js logo image." /></a>
     </td>
     <td>
-      <a href="https://expressjs.com/"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express javascript logo image." /></a>
+      <a href="https://expressjs.com/" title="Express"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express javascript logo image." /></a>
     </td>
     <td>
-      <a href="https://www.prisma.io/"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/prisma-2.svg" alt="Prisma ORM logo image." /></a>
+      <a href="https://www.prisma.io/" title="Prisma ORM"><img width="128" height="128" src="https://cdn.worldvectorlogo.com/logos/prisma-2.svg" alt="Prisma ORM logo image." /></a>
     </td>
     <td>
-      <a href="https://swagger.io/"><img width="128" height="128" src="https://static1.smartbear.co/swagger/media/assets/images/swagger_logo.svg" alt="Swagger logo image." /></a>
+      <a href="https://joi.dev/" title="JOI Validation"><img width="128" height="128" src="https://joi.dev/img/joiLogo.jpg" alt="Joi logo image." /></a>
+    </td>
+    <td>
+      <a href="https://swagger.io/" title="Swagger Documentation"><img width="128" height="128" src="https://static1.smartbear.co/swagger/media/assets/images/swagger_logo.svg" alt="Swagger logo image." /></a>
     </td>
   </tbody>
 </table>
