@@ -1,0 +1,33 @@
+### Create User
+POST http://localhost:3333/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john.doe@shared.com",
+    "password": "12345678",
+    "repeatPassword": "12345678" 
+}
+
+### Sign in
+POST http://localhost:3333/api/v1/auth/signIn
+Content-Type: application/json
+
+{
+    "email": "john.doe@shared.com",
+    "password": "12345678"
+}
+
+### Authentication
+GET http://localhost:3333/api/v1/auth/
+Authorization: Bearer your.token
+
+### User auth
+GET http://localhost:3333/api/v1/auth/me
+Authorization: Bearer your.token
+
+### Refresh Token
+POST http://localhost:3333/api/v1/auth/refresh
+
+### Logout
+POST http://localhost:3333/api/v1/auth/logout
