@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
 import { prisma } from '../lib/prisma';
+import { compare } from 'bcrypt';
+import { sign, verify } from 'jsonwebtoken';
 
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import { validateSignIn } from '../helpers';
@@ -37,50 +37,74 @@ authRoutes.post('/signIn', async (req: Request, res: Response) => {
         throw new BadRequestError('Invalid email or password!');
 
     // Check the user password.
-    const verifyPassword = await bcrypt.compare(value.password, user.password);
+    const verifyPassword = await compare(value.password, user.password);
 
     if (!verifyPassword)
         throw new BadRequestError('Invalid email or password!');
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+    const refreshToken = sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
 
-    const refreshToken = jwt.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
+    // Set maxAge with 7 days.
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 });
 
-    // Set maxAge with 1 day.
-    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
+    const expiredAt = new Date();
+    expiredAt.setDate(expiredAt.getDate() + 7);
+
+    await prisma.token.create({
+        data: {
+            userId: user!.id,
+            token: refreshToken,
+            expiredAt
+        }
+    });
+
+    const token = sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
 
     return res.status(200).json({ token });
 });
 
-authRoutes.get('/refresh', async (req: Request, res: Response) => {
-    const cookies = req.cookies;
-
-    if (!cookies?.jwt)
-        throw new UnauthorizedError();
-
-    const refreshToken = cookies.jwt;
-
+authRoutes.post('/refresh', async (req: Request, res: Response) => {
     try {
-        jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err: any, decode: any) => {
-            if (err)
-                throw new UnauthorizedError();
+        const refreshToken = req.cookies['refreshToken'];
 
-            const token = jwt.sign({ id: decode.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+        const payload: any = verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
-            return res.status(200).json({ token });
+        if (!payload)
+            throw new UnauthorizedError();
+
+        const dbToken = await prisma.token.findFirst({
+            where: {
+                userId: payload.id,
+                expiredAt: {
+                    gte: new Date()
+                }
+            }
         });
+
+        if (!dbToken)
+            throw new UnauthorizedError();
+
+        const token = sign({ id: payload.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+
+        return res.status(200).send({ token });
     } catch (error: any) {
         throw new ForbiddenError();
     }
 });
 
-authRoutes.get('/logout', async (req: Request, res: Response) => {
-    const cookies = req.cookies;
+authRoutes.post('/logout', async (req: Request, res: Response) => {
+    const refreshToken = req.cookies['refreshToken'];
 
-    if (!cookies?.jwt)
-        return res.sendStatus(204);
+    if (!refreshToken)
+        throw new UnauthorizedError();
 
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', maxAge: 1, secure: true });
+    await prisma.token.delete({
+        where: {
+            token: refreshToken
+        }
+    });
+
+    res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', maxAge: 0, secure: true });
 
     return res.sendStatus(204);
 });
