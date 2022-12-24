@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3333;
 
 // Cross Origin Resource Sharing
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // Middleware for cookies
 app.use(cookieParser());
@@ -23,7 +23,7 @@ app.use(cookieParser());
 // Built-in middleware for json
 app.use(express.json());
 
-// built-in middleware to handle urlencoded form data
+// Built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
