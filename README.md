@@ -45,6 +45,16 @@ First, start by cloning the repository:
 git clone https://github.com/shunny2/jwt-prisma
 ```
 
+Open each of the folders and run the command below to install the project's dependencies.
+```bash
+npm install
+```
+
+Run the command to start the server:
+```bash
+npm run dev
+```
+
 ## Project Status
 
 > Status: Developing.
