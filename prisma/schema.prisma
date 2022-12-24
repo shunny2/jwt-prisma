@@ -17,6 +17,18 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  Token     Token[]
 
   @@map("users")
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiredAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("tokens")
 }
