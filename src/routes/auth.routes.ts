@@ -45,7 +45,7 @@ authRoutes.post('/signIn', async (req: Request, res: Response) => {
     const refreshToken = sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
 
     // Set maxAge with 7 days.
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000, secure: true });
 
     const expiredAt = new Date();
     expiredAt.setDate(expiredAt.getDate() + 7);
