@@ -32,13 +32,3 @@ export const validateSignIn = (user: IUser) => {
 
     return schema.validate(user, { presence: 'required' });
 };
-
-export const validateRefreshToken = (refreshToken: Object) => {
-    const schema = Joi.object().keys({
-        refreshToken: Joi.string()
-            // .pattern(new RegExp('/^(?:[\w-]*\.){2}[\w-]*$/'))
-            .required()
-    });
-
-    return schema.validate(refreshToken, { presence: 'required' });
-};
