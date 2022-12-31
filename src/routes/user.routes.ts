@@ -9,9 +9,25 @@ import { BadRequestError } from '../helpers/api-errors';
 const userRoutes = Router();
 
 userRoutes.get('/', async (_, res: Response) => {
-    const count = await prisma.user.count()
+    const count = await prisma.user.count();
 
     return res.json({ count });
+});
+
+userRoutes.get('/search', async (req: Request, res: Response) => {
+    const { search, take, skip } = req.query;
+    
+    const users = await prisma.user.findMany({
+        take: take != undefined ? Number(take) : 10,
+        skip: skip != undefined ? Number(skip) : undefined,
+        where: {
+            name: {
+                contains: String(search),
+            }
+        },
+    });
+
+    return res.json({ users });
 });
 
 userRoutes.post('/', async (req: Request, res: Response, next: NextFunction) => {
