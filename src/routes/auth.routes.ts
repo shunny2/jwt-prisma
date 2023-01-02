@@ -42,7 +42,7 @@ authRoutes.post('/signIn', async (req: Request, res: Response) => {
     if (!verifyPassword)
         throw new BadRequestError('Invalid email or password!');
 
-    const refreshToken = sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
+    const refreshToken = sign({ id: user.id, name: user.name }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_REFRESH_SECRET });
 
     // Set maxAge with 7 days.
     res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000, secure: true });
@@ -58,7 +58,7 @@ authRoutes.post('/signIn', async (req: Request, res: Response) => {
         }
     });
 
-    const token = sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+    const token = sign({ id: user.id, name: user.name }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
 
     return res.status(200).json({ token });
 });
@@ -84,7 +84,7 @@ authRoutes.post('/refresh', async (req: Request, res: Response) => {
         if (!dbToken)
             throw new UnauthorizedError();
 
-        const token = sign({ id: payload.id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
+        const token = sign({ id: payload.id, name: payload.name }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN_JWT_SECRET });
 
         return res.status(200).send({ token });
     } catch (error: any) {
