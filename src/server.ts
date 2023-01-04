@@ -6,6 +6,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import routes from './routes';
+import Logging from './lib/logging';
 
 import { errors } from './middlewares';
 
@@ -33,5 +34,5 @@ app.use('/api/v1', routes);
 app.use(errors);
 
 app.listen(PORT, () => {
-    console.log(`[server]: Server is running at https://localhost:${PORT}`);
+    Logging.info(`[SERVER]: Server is running at https://localhost:${PORT}`);
 });
