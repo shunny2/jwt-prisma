@@ -14,6 +14,7 @@
     "dependencies": {
         "@prisma/client": "^4.8.0",
         "bcrypt": "^5.1.0",
+        "chalk": "^5.2.0",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dayjs": "^1.11.6",
