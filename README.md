@@ -62,7 +62,7 @@ npm run dev
 
 ## Project Status
 
-> Status: Developing.
+> Status: Completed.
 
 <hr/>
 
