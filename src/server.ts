@@ -4,11 +4,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 import routes from './routes';
 import Logging from './lib/logging';
 
 import { errors } from './middlewares';
+import { SwaggerConfigs } from "./docs/swaggerConfig";
 
 dotenv.config();
 
@@ -27,6 +30,18 @@ app.use(express.json());
 // Built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
 
+// Swagger Configs
+if (process.env.NODE_ENV !== 'test') {
+    const swaggerSpec = swaggerJSDoc(SwaggerConfigs);
+    
+    app.get('/api/v1/swagger.json',  (_, res)=> {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerSpec);
+    });
+    
+    app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
+
 // Routes
 app.use('/api/v1', routes);
 
@@ -34,5 +49,5 @@ app.use('/api/v1', routes);
 app.use(errors);
 
 app.listen(PORT, () => {
-    Logging.info(`[SERVER]: Server is running at https://localhost:${PORT}`);
+    Logging.info(`[SERVER]: Server is running at https://localhost:${PORT}/api/v1`);
 });
