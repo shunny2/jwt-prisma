@@ -5,10 +5,13 @@
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#how-to-run">How to Run</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#routes">Routes</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="project-status">Project Status</a>
 </p>
 
 </br>
+
 <p align="center">
 <a href="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social" alt="Repo Stars"/></a>
 <a href="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social" alt="Repo Forks"/></a>
@@ -18,6 +21,8 @@
 ## About Application
 
 An application made with Nodejs, Express, and Prisma to perform a JSON Web Token authentication flow.
+
+API Documentation is available at: [/api/v1/docs](http://localhost:3333/api/v1/docs)
 
 ## Technologies
 
@@ -60,9 +65,20 @@ Run the command to start the server:
 npm run dev
 ```
 
+To see the database tables and data, run the command:
+```bash
+npx prisma studio
+```
+
+## Routes
+
+The image below describes the routes available by the application.
+
+![jwt-routes](https://user-images.githubusercontent.com/72872854/215277003-bef13fe9-5390-4ccf-a56b-447ee74d02a1.png)
+
 ## Project Status
 
-> Status: Developing.
+> Status: Completed.
 
 <hr/>
 
