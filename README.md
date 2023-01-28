@@ -7,7 +7,7 @@
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#routes">Routes</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="project-status">Project Status</a>
+  <a href="#project-status">Project Status</a>
 </p>
 
 </br>
