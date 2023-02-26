@@ -20,7 +20,7 @@
 
 ## About Application
 
-An application made with Nodejs, Express, and Prisma to perform a JSON Web Token authentication flow.
+An application made with [Nodejs](https://nodejs.org/en/), [Express](https://expressjs.com/), and [Prisma](https://www.prisma.io/) to perform a [JSON Web Token](https://jwt.io/introduction#:~:text=JSON%20Web%20Token%20(JWT)%20is,because%20it%20is%20digitally%20signed.) authentication flow.
 
 API Documentation is available at: [/api/v1/docs](http://localhost:3333/api/v1/docs)
 
