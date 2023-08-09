@@ -9,6 +9,12 @@ Content-Type: application/json
     "repeatPassword": "12345678" 
 }
 
+### Users count
+GET http://localhost:3333/api/v1/users/
+
+### Search User by email
+GET http://localhost:3333/api/v1/users/search?search=john&take=10
+
 ### Sign in
 POST http://localhost:3333/api/v1/auth/signIn
 Content-Type: application/json
