@@ -3,13 +3,11 @@ import { prisma } from '../lib/prisma';
 import { compare } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
 import { validateSignIn } from '../helpers';
 import { verifyToken } from '../middlewares';
 import { BadRequestError, ForbiddenError, UnauthorizedError } from '../helpers/api-errors';
-
-dotenv.config();
 
 const authRoutes = Router();
 
