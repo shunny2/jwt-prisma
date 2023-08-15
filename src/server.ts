@@ -31,12 +31,12 @@ app.use(express.urlencoded({ extended: false }));
 // Swagger Configs
 if (process.env.NODE_ENV !== 'test') {
     const swaggerSpec = swaggerJSDoc(SwaggerConfigs);
-    
-    app.get('/api/v1/swagger.json',  (_, res)=> {
+
+    app.get('/api/v1/swagger.json', (_, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec);
     });
-    
+
     app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
