@@ -2,11 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { verify } from 'jsonwebtoken';
 
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
 import { ForbiddenError, UnauthorizedError } from '../helpers/api-errors';
-
-dotenv.config();
 
 export const verifyToken = async (req: Request, _: Response, next: NextFunction) => {
     try {
