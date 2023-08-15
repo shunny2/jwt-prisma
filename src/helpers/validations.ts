@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { IUser } from '../utils/types';
+import { IUser } from '../interfaces/user';
 
 export const validateUser = (user: IUser) => {
     const schema = Joi.object<IUser>({
