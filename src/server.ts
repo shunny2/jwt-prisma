@@ -4,14 +4,14 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 import routes from './routes';
 import Logging from './lib/logging';
 
 import { errors } from './middlewares';
-import { SwaggerConfigs } from "./docs/swaggerConfig";
+import { SwaggerConfigs } from './docs/swaggerConfig';
 
 const app = express();
 const PORT = process.env.PORT || 3333;
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== 'test') {
         res.send(swaggerSpec);
     });
     
-    app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 // Routes
