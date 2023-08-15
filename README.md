@@ -17,7 +17,7 @@
 <p align="center">
 <a href="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social" alt="Repo Stars"/></a>
 <a href="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social" alt="Repo Forks"/></a>
-<a href="https://img.shields.io/github/license/shunny2/jwt-prisma"><img src="https://img.shields.io/github/license/shunny2/jwt-prisma" alt="License"/></a>
+<a href="https://img.shields.io/github/license/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/license/shunny2/jwt-prisma?style=social" alt="License"/></a>
 </p>
 
 ## About Application
