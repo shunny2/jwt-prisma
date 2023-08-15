@@ -16,7 +16,7 @@ userRoutes.get('/', async (_, res: Response) => {
 
 userRoutes.get('/search', async (req: Request, res: Response) => {
     const { search, take, skip } = req.query;
-    
+
     const users = await prisma.user.findMany({
         take: take != undefined ? Number(take) : 10,
         skip: skip != undefined ? Number(skip) : undefined,
@@ -24,10 +24,16 @@ userRoutes.get('/search', async (req: Request, res: Response) => {
             name: {
                 contains: String(search),
             }
-        },
+        }
     });
 
-    return res.json({ users });
+    // Remove the password field from each user object
+    const usersWithoutPasswords = users.map(user => {
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+    });
+
+    return res.json({ users: usersWithoutPasswords });
 });
 
 userRoutes.post('/', async (req: Request, res: Response, next: NextFunction) => {
