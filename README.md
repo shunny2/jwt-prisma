@@ -22,9 +22,13 @@
 
 ## About Application
 
-An application made with [Nodejs](https://nodejs.org/en/), [Express](https://expressjs.com/), and [Prisma](https://www.prisma.io/) to perform a [JSON Web Token](https://jwt.io/introduction#:~:text=JSON%20Web%20Token%20(JWT)%20is,because%20it%20is%20digitally%20signed.) authentication flow.
+<b>JWT Prisma</b> is an application designed to streamline the user authentication process. While initially created for didactic purposes, its robust features make it highly suitable for small and medium-sized projects. The chosen architecture for the project is the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC) (Model-View-Controller) pattern, as it enables us to organize our project efficiently and in a scalable manner.
 
-API Documentation is available at: [/api/v1/docs](http://localhost:3333/api/v1/docs)
+The application was developed using a carefully curated set of technologies. Notably, [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/) provide an agile and versatile environment for development. Integration with [Prisma](https://www.prisma.io/) offers precise and simplified database access control, while [PostgreSQL](https://www.postgresql.org/) ensures reliable data storage.
+
+Furthermore, the implementation of [Swagger](https://swagger.io/) provides clear and automated API documentation, enhancing understanding and collaboration among teams. For security, using [JSON Web Token](https://jwt.io/introduction#:~:text=JSON%20Web%20Token%20(JWT)%20is,because%20it%20is%20digitally%20signed.) (JWT) offers a reliable method for authentication and authorization, bolstering the protection of the application's resources.
+
+In summary, <b>JWT Prisma</b> combines a thoughtfully chosen array of technologies with a well-defined MVC architecture, resulting in an application that offers effective authentication and is primed to evolve efficiently and support growing demands.
 
 ## Technologies
 
@@ -77,6 +81,8 @@ npx prisma studio
 The image below describes the routes available by the application.
 
 ![jwt-routes](https://user-images.githubusercontent.com/72872854/215277003-bef13fe9-5390-4ccf-a56b-447ee74d02a1.png)
+
+API Documentation is available at [/api/v1/docs](http://localhost:3333/api/v1/docs)
 
 ## Project Status
 
