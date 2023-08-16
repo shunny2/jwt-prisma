@@ -93,7 +93,7 @@ const swaggerDefinition = {
                 }
             }
         },
-        "/auth/signIn": {
+        "/auth/login": {
             post: {
                 summary: "User Sign in",
                 description: "This route is responsible for signing in to the user, generating the token, and refreshing the token.",
