@@ -82,7 +82,7 @@ npx prisma studio
 
 The image below describes the routes available by the application.
 
-![jwt-routes](https://user-images.githubusercontent.com/72872854/215277003-bef13fe9-5390-4ccf-a56b-447ee74d02a1.png)
+![jwt-prisma-routes](https://github.com/shunny2/jwt-prisma/assets/72872854/f9e91bfc-9030-45a0-8067-9c6133529856)
 
 API Documentation is available at [/api/v1/docs](http://localhost:3333/api/v1/docs)
 
