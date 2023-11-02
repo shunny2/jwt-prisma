@@ -14,6 +14,8 @@
 
 </br>
 
+<p align="center"><a href="https://nodejs.org/" target="_blank" title="NodeJS"><img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" width="125"></a></p>
+
 <p align="center">
 <a href="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/stars/shunny2/jwt-prisma?style=social" alt="Repo Stars"/></a>
 <a href="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social"><img src="https://img.shields.io/github/forks/shunny2/jwt-prisma?style=social" alt="Repo Forks"/></a>
@@ -24,7 +26,7 @@
 
 <b>JWT Prisma</b> is an application designed to streamline the user authentication process. While initially created for didactic purposes, its robust features make it highly suitable for small and medium-sized projects. The chosen architecture for the project is the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC) (Model-View-Controller) pattern, as it enables us to organize our project efficiently and in a scalable manner.
 
-The application was developed using a carefully curated set of technologies. Notably, [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/) provide an agile and versatile environment for development. Integration with [Prisma](https://www.prisma.io/) offers precise and simplified database access control, while [PostgreSQL](https://www.postgresql.org/) ensures reliable data storage.
+The application was developed using a carefully curated set of technologies. Notably, [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/) provide an agile and versatile environment for development. Integration with [Prisma](https://www.prisma.io/) offers precise and simplified database access control, while [SQLite](https://www.sqlite.org/index.html) ensures reliable data storage.
 
 Furthermore, the implementation of [Swagger](https://swagger.io/) provides clear and automated API documentation, enhancing understanding and collaboration among teams. For security, using [JSON Web Token](https://jwt.io/introduction#:~:text=JSON%20Web%20Token%20(JWT)%20is,because%20it%20is%20digitally%20signed.) (JWT) offers a reliable method for authentication and authorization, bolstering the protection of the application's resources.
 
