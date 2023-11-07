@@ -1,35 +1,35 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 generator erd {
-  provider = "prisma-erd-generator"
+    provider = "prisma-erd-generator"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  email_verified Boolean  @default(false)
-  password  String
-  createdAt DateTime @default(now())
-  Token     Token[]
+    id             String   @id @default(cuid())
+    name           String
+    email          String   @unique
+    email_verified Boolean  @default(false)
+    password       String
+    createdAt      DateTime @default(now())
+    Token          Token[]
 
-  @@map("users")
+    @@map("users")
 }
 
 model Token {
-  id        String   @id @default(cuid())
-  token     String   @unique
-  createdAt DateTime @default(now())
-  expiredAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+    id        String   @id @default(cuid())
+    token     String   @unique
+    createdAt DateTime @default(now())
+    expiredAt DateTime @default(now())
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
 
-  @@map("tokens")
+    @@map("tokens")
 }
