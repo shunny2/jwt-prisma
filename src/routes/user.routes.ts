@@ -9,4 +9,6 @@ routes.get('/search', users.search);
 
 routes.post('/', users.create);
 
+routes.get('/email-confirmation/:token', users.emailConfirmation);
+
 export default routes;

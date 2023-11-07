@@ -5,6 +5,11 @@ import bcrypt from 'bcrypt';
 
 import { validateUser } from '../helpers';
 import { BadRequestError } from '../helpers/api-errors';
+import { emailToken } from '../utils/email-token';
+import { template } from '../utils/template';
+import { IMessage } from '../interfaces/email';
+import { sendEmail } from '../services/email/send-email';
+import { resendEmail } from '../services/email/resend-email';
 
 export const count = async (_: any, res: Response) => {
     const count = await prisma.user.count();
@@ -60,7 +65,97 @@ export const create = async (req: Request, res: Response) => {
         }
     });
 
-    const { id } = newUser;
+    const { id, email, name } = newUser;
+
+    const { token } = await prisma.token.create({
+        data: {
+            userId: id,
+            token: emailToken.generateNewToken(),
+            type: 'emailConfirmation',
+            expiredAt: emailToken.generateExpirationDate()
+        }
+    });
+
+    const url = `${process.env.BASE_URL}:${process.env.PORT}/api/v1/users/email-confirmation/${token}`;
+
+    const message: IMessage = {
+        to: {
+            name,
+            email
+        },
+        subject: 'Confirmation email',
+        template: {
+            name: 'confirm-email',
+            url
+        }
+    }
+
+    await sendEmail(message);
 
     return res.status(201).json({ id });
+};
+
+export const emailConfirmation = async (req: Request, res: Response) => {
+    try {
+        const { token } = req.params;
+
+        // Check the database to see if the token is present and the expiration date has not passed.
+        const confirmEmailToken = await prisma.token.findFirst({
+            where: {
+                token,
+                type: 'emailConfirmation',
+                expiredAt: {
+                    gte: new Date()
+                }
+            }
+        });
+
+        const user = await prisma.user.findFirst({
+            where: {
+                id: confirmEmailToken?.userId
+            }
+        })
+
+        if (!user)
+            throw new BadRequestError('There is no user with this email in our database.');
+
+        // If the token is expired, the confirmation email will be sent again.
+        if (!confirmEmailToken || confirmEmailToken.used) {
+            await resendEmail(user, token);
+
+            throw new BadRequestError('Invalid or expired confirmation token.');
+        }
+
+        // Changes the user's status to verified.
+        await prisma.user.update({
+            where: {
+                id: user!.id
+            },
+            data: {
+                email_verified: true
+            }
+        });
+
+        // Changes the status of the token as used.
+        await prisma.token.update({
+            where: {
+                token
+            },
+            data: {
+                used: true
+            }
+        });
+
+        await prisma.token.delete({
+            where: {
+                token
+            }
+        });
+
+        const templateEmailConfirmed = template.generate('email-confirmed', 'Email confirmed');
+
+        return res.status(200).send(templateEmailConfirmed);
+    } catch (error: any) {
+        return res.status(500).json({ message: 'An error occurred validating the email provided.' });
+    }
 };
