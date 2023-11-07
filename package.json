@@ -12,7 +12,7 @@
     "author": "Alexander Davis",
     "license": "MIT",
     "dependencies": {
-        "@prisma/client": "^4.8.0",
+        "@prisma/client": "^5.5.2",
         "bcrypt": "^5.1.0",
         "chalk": "^5.2.0",
         "cookie-parser": "^1.4.6",
@@ -43,7 +43,7 @@
         "@types/swagger-jsdoc": "^6.0.1",
         "@types/swagger-ui-express": "^4.1.3",
         "@types/uuid": "^9.0.6",
-        "prisma": "^4.8.0",
+        "prisma": "^5.5.2",
         "prisma-erd-generator": "^1.2.4",
         "tsx": "^3.12.1",
         "typescript": "^4.9.3"
