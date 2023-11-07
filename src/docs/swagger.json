@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "API to perform authentication with JSON Web Token.",
-        "description": "The purpose of this API is to authenticate something using the JSON Web Token.",
+        "title": "The User Management API: Securely Managing User Accounts",
+        "description": "This API covers a range of essential features for user management systems, including authentication, email confirmation, password reset, user information retrieval, and user search. It supports the standard flows required to create, manage, and interact with user accounts securely and efficiently.",
         "termsOfService": "https://github.com/shunny2/jwt-prisma",
         "contact": {
             "name": "API Support",
@@ -426,6 +426,143 @@
                     }
                 }
             }
+        },
+        "/users/email-confirmation/{token}": {
+            "get": {
+                "summary": "User email confirmation",
+                "description": "This route is responsible for sending a confirmation email to the user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "token",
+                        "description": "Email confirmation token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "An error occurred validating the email provided."
+                    }
+                }
+            }
+        },
+        "/users/forgot-password": {
+            "post": {
+                "summary": "Send password reset request via email",
+                "description": "This route is responsible for allowing users to request a password reset via email.",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "Password reset email sent successfully."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "There is no user with this email in our database."
+                    },
+                    "500": {
+                        "description": "There was an internal server error."
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "email": "johndoe@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/reset-password/{token}": {
+            "patch": {
+                "summary": "Reset User Password by Token",
+                "description": "This route is responsible for allowing a user to reset their password using a specific reset token.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "token",
+                        "description": "Reset password token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "Password reset successfully."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid or expired reset password token."
+                    },
+                    "500": {
+                        "description": "There was an internal server error."
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "password": "12345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -441,6 +578,10 @@
                     },
                     "email": {
                         "type": "string"
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "default": false
                     },
                     "password": {
                         "type": "string"
