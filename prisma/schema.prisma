@@ -26,6 +26,8 @@ model User {
 model Token {
     id        String   @id @default(cuid())
     token     String   @unique
+    type      String
+    used      Boolean  @default(false)
     createdAt DateTime @default(now())
     expiredAt DateTime @default(now())
     userId    String
