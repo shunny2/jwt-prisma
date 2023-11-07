@@ -20,13 +20,13 @@ export const resendEmail = async (user: User, token: string) => {
             }
         });
 
-        const newConfirmationToken = emailToken.generateNewToken();
+        const newEmailConfirmationToken = emailToken.generateNewToken();
 
         await prisma.token.create({
             data: {
                 userId: user.id,
-                token: newConfirmationToken,
-                type: 'confirmationEmail',
+                token: newEmailConfirmationToken,
+                type: 'emailConfirmation',
                 expiredAt: emailToken.generateExpirationDate()
             }
         });
