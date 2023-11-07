@@ -48,6 +48,7 @@ export const login = async (req: Request, res: Response) => {
     await prisma.token.create({
         data: {
             userId: user!.id,
+            type: 'authentication',
             token: refreshToken,
             expiredAt
         }
@@ -87,6 +88,7 @@ export const refresh = async (req: Request, res: Response) => {
         const dbToken = await prisma.token.findFirst({
             where: {
                 userId: payload.id,
+                type: 'authentication',
                 expiredAt: {
                     gte: new Date()
                 }
