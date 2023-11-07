@@ -3,7 +3,7 @@ import { prisma } from '../lib/prisma';
 
 import bcrypt from 'bcrypt';
 
-import { validateEmail, validateUser } from '../helpers';
+import { validateEmail, validatePassword, validateUser } from '../helpers';
 import { BadRequestError } from '../helpers/api-errors';
 import { emailToken } from '../utils/email-token';
 import { template } from '../utils/template';
@@ -201,4 +201,56 @@ export const forgotPassword = async (req: Request, res: Response) => {
     await sendEmail(message);
 
     return res.status(200).send('Password reset email sent successfully.');
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+    const { token } = req.params;
+    const { error, value } = validatePassword(req.body);
+
+    if (error)
+        return res.status(400).json({ message: error?.message });
+
+    // Check the database to see if the token is present and the expiration date has not passed.
+    const resetPasswordToken = await prisma.token.findFirst({
+        where: {
+            token,
+            type: 'resetPassword',
+            expiredAt: {
+                gte: new Date()
+            }
+        }
+    });
+
+    if (!resetPasswordToken || resetPasswordToken.used)
+        throw new BadRequestError('Invalid or expired reset password token.');
+
+    // Encrypting user password.
+    const hashPassword = await bcrypt.hash(value.password, 10);
+
+    await prisma.user.update({
+        where: {
+            id: resetPasswordToken.userId
+        },
+        data: {
+            password: hashPassword
+        }
+    });
+
+    // Changes the status of the token as used.
+    await prisma.token.update({
+        where: {
+            token
+        },
+        data: {
+            used: true
+        }
+    });
+
+    await prisma.token.delete({
+        where: {
+            token
+        }
+    });
+
+    return res.status(200).send('Password reset successfully.');
 };
