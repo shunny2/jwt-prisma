@@ -15,6 +15,7 @@ model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
+  email_verified Boolean  @default(false)
   password  String
   createdAt DateTime @default(now())
   Token     Token[]
