@@ -3,7 +3,7 @@ import { prisma } from '../lib/prisma';
 
 import bcrypt from 'bcrypt';
 
-import { validateUser } from '../helpers';
+import { validateEmail, validateUser } from '../helpers';
 import { BadRequestError } from '../helpers/api-errors';
 import { emailToken } from '../utils/email-token';
 import { template } from '../utils/template';
@@ -158,4 +158,47 @@ export const emailConfirmation = async (req: Request, res: Response) => {
     } catch (error: any) {
         return res.status(500).json({ message: 'An error occurred validating the email provided.' });
     }
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+    const { error, value } = validateEmail(req.body);
+
+    if (error)
+        return res.status(400).json({ message: error?.message });
+
+    const user = await prisma.user.findFirst({
+        where: {
+            email: value.email
+        }
+    });
+
+    if (!user)
+        throw new BadRequestError('There is no user with this email in our database.');
+
+    const { token } = await prisma.token.create({
+        data: {
+            userId: user!.id,
+            token: emailToken.generateNewToken(),
+            type: 'resetPassword',
+            expiredAt: emailToken.generateExpirationDate()
+        }
+    });
+
+    const url = `${process.env.BASE_URL}:3000/reset-password/${token}`;
+
+    const message: IMessage = {
+        to: {
+            name: user.name,
+            email: value.email
+        },
+        subject: 'Reset your account password',
+        template: {
+            name: 'reset-password',
+            url
+        }
+    }
+
+    await sendEmail(message);
+
+    return res.status(200).send('Password reset email sent successfully.');
 };
