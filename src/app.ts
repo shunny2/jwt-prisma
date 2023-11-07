@@ -9,7 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 import routes from './routes';
 
 import { errors } from './middlewares';
-import { SwaggerConfigs } from './docs/swaggerConfig';
+import { SwaggerConfigs } from './docs/swagger-config';
 
 const app = express();
 
