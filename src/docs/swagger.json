@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "The User Management API: Securely Managing User Accounts",
-        "description": "This API covers a range of essential features for user management systems, including authentication, email confirmation, password reset, user information retrieval, and user search. It supports the standard flows required to create, manage, and interact with user accounts securely and efficiently.",
+        "title": "JWT Prisma API - Efficient Development with Secure Authentication",
+        "description": "Welcome to the documentation of the JWT Prisma API, an application designed to streamline the user authentication process. Originally developed for didactic purposes, its robust feature set makes it highly suitable for small to medium-sized projects. This document provides comprehensive information about API endpoints, parameters, and responses, demonstrating how to interact effectively with the platform.",
         "termsOfService": "https://github.com/shunny2/jwt-prisma",
         "contact": {
             "name": "API Support",
