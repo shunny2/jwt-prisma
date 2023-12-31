@@ -9,10 +9,26 @@ Content-Type: application/json
     "repeatPassword": "12345678" 
 }
 
+### Forgot User password
+POST http://localhost:3333/api/v1/users/forgot-password
+Content-Type: application/json
+
+{
+    "email": "john.doe@shared.com",
+}
+
+### Reset User password
+PATCH http://localhost:3333/api/v1/users/reset-password/your-token
+Content-Type: application/json
+
+{
+    "password": "123456789",
+}
+
 ### Users count
 GET http://localhost:3333/api/v1/users/
 
-### Search User by email
+### Search User by name
 GET http://localhost:3333/api/v1/users/search?search=john&take=10
 
 ### Sign in
